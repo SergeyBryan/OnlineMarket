@@ -9,8 +9,8 @@ create table users
     first_name text,
     last_name  text,
     phone      text,
-    role       text not null,
-    image      bigint
+    role       varchar not null,
+    image      text
 );
 
 create table comments
