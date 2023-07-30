@@ -1,8 +1,8 @@
 package ru.skypro.homework.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.skypro.homework.models.Users;
+import ru.skypro.homework.models.User;
 
-public interface UsersRepository extends JpaRepository<Users, Integer> {
+public interface UsersRepository extends JpaRepository<User, Integer> {
 
 }

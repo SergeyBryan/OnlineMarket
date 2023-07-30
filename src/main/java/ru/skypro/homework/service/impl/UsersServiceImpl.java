@@ -3,7 +3,8 @@ package ru.skypro.homework.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.models.Users;
+import ru.skypro.homework.dto.UpdateUserDTO;
+import ru.skypro.homework.models.User;
 import ru.skypro.homework.repository.UsersRepository;
 import ru.skypro.homework.service.UsersService;
 
@@ -18,18 +19,18 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Users save(Users user) {
+    public User save(User user) {
         return null;
     }
 
     @Override
-    public Users getByID(int ID) {
+    public User getByID(int ID) {
         return null;
     }
 
     @Override
-    public String[] editUser(String... newValue) {
-        return new String[0];
+    public UpdateUserDTO editUser(UpdateUserDTO updateUser) {
+        return new UpdateUserDTO();
     }
 
     @Override
