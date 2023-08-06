@@ -48,7 +48,6 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Void> setNewPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO) {
-        userService.setPassword(newPasswordDTO);
         return ResponseEntity.ok().build();
     }
 
