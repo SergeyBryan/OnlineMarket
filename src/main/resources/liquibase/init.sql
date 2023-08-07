@@ -11,6 +11,7 @@ create table users
     phone      text,
     role       varchar not null,
     image      text
+
 );
 
 create table comments
@@ -20,19 +21,19 @@ create table comments
     author_image      text      not null,
     author_first_name text      not null,
     txt               text      not null
+    FOREIGN KEY (user_id) REFERENCES users(ID)
 );
 
-create table extended_ad
+create table ad
 (
     id                serial primary key,
-    author_first_name text    not null,
-    author_last_name  text    not null,
-    email             text    not null,
-    phone             text    not null,
+    user_id           integer not null,
     price             integer not null,
-    description       text    not null,
     title             text,
     image             text    not null
+    FOREIGN KEY (user_id) REFERENCES users (ID)
+    FOREIGN KEY (ad_id) REFERENCES ad(ID)
+
 );
 
 
