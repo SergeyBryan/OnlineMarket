@@ -3,27 +3,30 @@ package ru.skypro.homework.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import ru.skypro.homework.dto.Role;
 import tools.TimeOfCreation;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comment")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "text")
+    private int ID;
     private String text;
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdDate;
+    private Long createdAt;
+
+    public Comment(int ID, String text, User commentAuthor) {
+        this.ID = ID;
+        this.text = text;
+        this.createdAt = createdAt;
+        this.commentAuthor = commentAuthor;
+        createdAt = TimeOfCreation.TimeOfCreation();
+    }
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User commentAuthor;
