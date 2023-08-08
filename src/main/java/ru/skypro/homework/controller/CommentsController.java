@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.*;
+import ru.skypro.homework.dto.comment.CommentDTO;
+import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.dto.comment.ListCommentsDTO;
 import ru.skypro.homework.models.Advertisement;
 
 
@@ -67,7 +69,7 @@ public class CommentsController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<CommentDTO> addCommentToAd(@RequestBody CreateOrUpdateCommentDTO adDTO) {
+    public ResponseEntity<CommentDTO> addCommentToAd(@RequestBody CreateOrUpdateCommentDTO CorUCommentDTO, @PathVariable String adId) {
         return ResponseEntity.ok().build();
     }
 
@@ -130,7 +132,7 @@ public class CommentsController {
     )
     public ResponseEntity<CommentDTO> updateAd(@PathVariable String adId,
                                                @PathVariable String commentId,
-                                               @RequestBody CreateOrUpdateCommentDTO adDTO) {
+                                               @RequestBody CreateOrUpdateCommentDTO CorUCommentDTO) {
         return ResponseEntity.ok().build();
     }
 }

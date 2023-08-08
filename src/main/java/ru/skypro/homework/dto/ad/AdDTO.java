@@ -1,8 +1,7 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.dto.ad;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
