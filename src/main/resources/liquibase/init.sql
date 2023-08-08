@@ -17,22 +17,21 @@ create table users
 create table comments
 (
     id                serial primary key,
-    created_at        timestamp not null,
+    text              text      not null,
+    created_at        bigint    not null,
     author_image      text      not null,
     author_first_name text      not null,
-    txt               text      not null
-    FOREIGN KEY (user_id) REFERENCES users(ID)
+    user_id           text      references users(id),
+    ad_id             text    references ad(id)
 );
 
 create table ad
 (
-    id                serial primary key,
-    user_id           integer not null,
+    id                serial  primary key,
     price             integer not null,
     title             text,
-    image             text    not null
-    FOREIGN KEY (user_id) REFERENCES users (ID)
-    FOREIGN KEY (ad_id) REFERENCES ad(ID)
+    image             text    not null,
+    user_id           text    references users(id)
 
 );
 

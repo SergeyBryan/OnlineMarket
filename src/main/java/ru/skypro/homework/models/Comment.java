@@ -15,17 +15,11 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    private int id;
     private String text;
     private Long createdAt;
-
-    public Comment(int ID, String text, User commentAuthor) {
-        this.ID = ID;
-        this.text = text;
-        this.createdAt = createdAt;
-        this.commentAuthor = commentAuthor;
-        createdAt = TimeOfCreation.TimeOfCreation();
-    }
+    private String author_image;
+    private String author_first_name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -35,4 +29,13 @@ public class Comment {
     @JoinColumn(name = "ad_id")
     private Ad ad;
 
+    public Comment(int id, String text, String author_image, String author_first_name, User commentAuthor, Ad ad) {
+        this.id = id;
+        this.text = text;
+        this.createdAt = TimeOfCreation.TimeOfCreation();
+        this.author_image = author_image;
+        this.author_first_name = author_first_name;
+        this.commentAuthor = commentAuthor;
+        this.ad = ad;
+    }
 }
