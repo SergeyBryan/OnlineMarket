@@ -14,6 +14,17 @@ create table users
 
 );
 
+create table ad
+(
+    id                serial  primary key,
+    price             integer not null,
+    title             text,
+    image             text    not null,
+    user_id           integer    references users(id)
+
+);
+
+
 create table comments
 (
     id                serial primary key,
@@ -21,18 +32,9 @@ create table comments
     created_at        bigint    not null,
     author_image      text      not null,
     author_first_name text      not null,
-    user_id           text      references users(id),
-    ad_id             text    references ad(id)
+    user_id           integer      references users(id),
+    ad_id             integer    references ad(id)
 );
 
-create table ad
-(
-    id                serial  primary key,
-    price             integer not null,
-    title             text,
-    image             text    not null,
-    user_id           text    references users(id)
-
-);
 
 
