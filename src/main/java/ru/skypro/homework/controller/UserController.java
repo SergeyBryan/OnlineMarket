@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.dto.auth.NewPasswordDTO;
 import ru.skypro.homework.dto.UpdateUserDTO;
 import ru.skypro.homework.models.User;
@@ -22,7 +23,6 @@ import javax.validation.Valid;
 @Slf4j
 public class UserController {
 
-    private final UsersService userService;
 
     @Operation(
             summary = "Update password",
@@ -70,7 +70,7 @@ public class UserController {
             value = "/me",
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<User> getUser(){
+    public ResponseEntity<User> getUser() {
         return ResponseEntity.ok().build();
     }
 
@@ -94,7 +94,7 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<UpdateUserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO){
+    public ResponseEntity<UpdateUserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) {
         return ResponseEntity.ok().build();
     }
 
@@ -117,8 +117,9 @@ public class UserController {
             value = "/me/image",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
     )
-    public ResponseEntity<Void> updateUsersImage(@RequestPart("image") MultipartFile image){
+    public ResponseEntity<Void> updateUsersImage(@RequestPart("image") MultipartFile image) {
         return ResponseEntity.ok().build();
     }
+
 }
 

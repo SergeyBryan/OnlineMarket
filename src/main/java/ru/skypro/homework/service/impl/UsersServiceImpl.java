@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.UpdateUserDTO;
+import ru.skypro.homework.dto.UserDTO;
+import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.models.User;
 import ru.skypro.homework.repository.UsersRepository;
 import ru.skypro.homework.service.UsersService;
@@ -37,4 +39,6 @@ public class UsersServiceImpl implements UsersService {
     public void editImage(MultipartFile multipartFile) {
 
     }
+
+
 }
