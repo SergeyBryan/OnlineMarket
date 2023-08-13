@@ -18,6 +18,7 @@ public class Ad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Integer price;
+    @Column(name = "Title")
     private String title;
     private String image;
 
