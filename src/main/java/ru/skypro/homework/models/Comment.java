@@ -22,11 +22,8 @@ public class Comment {
     @Column(name = "text")
     private String text;
     @CreatedDate
-    @Column(name = "reg_date")
-    private LocalDateTime regDate;
-    private String author_image;
-    private String author_first_name;
-
+    @Column(name = "created_at")
+    private LocalDateTime createdDate;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User commentAuthor;
