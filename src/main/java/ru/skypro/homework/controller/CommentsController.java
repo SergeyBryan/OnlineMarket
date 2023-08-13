@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.dto.comment.ListCommentsDTO;
-import ru.skypro.homework.models.Advertisement;
 
 
 @Slf4j
