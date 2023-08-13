@@ -8,6 +8,7 @@ create table users
     email      text not null,
     first_name text,
     last_name  text,
+    reg_date   timestamp not null,
     phone      text,
     role       varchar not null,
     image      text
@@ -30,8 +31,6 @@ create table comments
     id                serial primary key,
     text              text      not null,
     created_at        bigint    not null,
-    author_image      text      not null,
-    author_first_name text      not null,
     user_id           integer      references users(id),
     ad_id             integer    references ad(id)
 );
