@@ -2,7 +2,7 @@ package ru.skypro.homework.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.skypro.homework.dto.AdDTO;
+import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.models.Ad;
 
 import java.util.List;
