@@ -2,6 +2,7 @@ package ru.skypro.homework.dto.ad;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.skypro.homework.dto.ad.CreateOrUpdateAdDTO;
 
 import java.util.List;
 
