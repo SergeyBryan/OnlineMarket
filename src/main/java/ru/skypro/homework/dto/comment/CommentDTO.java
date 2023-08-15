@@ -1,7 +1,9 @@
 package ru.skypro.homework.dto.comment;
 
+import lombok.Data;
 import ru.skypro.homework.models.User;
 
+@Data
 public class CommentDTO {
     private int id;
     private User author;
