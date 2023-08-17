@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ExtendedAdDto {
-    private int ID;
+    private Long id;
     private String authorFirstName;
     private String authorLastName;
     private String description;

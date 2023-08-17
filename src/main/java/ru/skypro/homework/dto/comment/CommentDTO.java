@@ -5,7 +5,7 @@ import ru.skypro.homework.models.User;
 
 @Data
 public class CommentDTO {
-    private int id;
+    private Long id;
     private User author;
     private int createAt;
     private String text;
