@@ -4,7 +4,7 @@
 
 create table users
 (
-    id         serial primary key,
+    id         bigserial primary key,
     email      text not null,
     first_name text,
     last_name  text,
@@ -17,22 +17,22 @@ create table users
 
 create table ad
 (
-    id                serial  primary key,
+    id                bigserial  primary key,
     price             integer not null,
     title             text,
     image             text    not null,
-    user_id           integer    references users(id)
+    user_id           bigint    references users(id)
 
 );
 
 
 create table comments
 (
-    id                serial primary key,
+    id                bigserial primary key,
     text              text      not null,
     created_at        bigint    not null,
-    user_id           integer      references users(id),
-    ad_id             integer    references ad(id)
+    user_id           bigint      references users(id),
+    ad_id             bigint    references ad(id)
 );
 
 

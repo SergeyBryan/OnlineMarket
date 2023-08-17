@@ -13,12 +13,9 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String text;
     private Long createdAt;
-    private String author_image;
-    private String author_first_name;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User commentAuthor;
@@ -27,12 +24,10 @@ public class Comment {
     @JoinColumn(name = "ad_id")
     private Ad ad;
 
-    public Comment(int id, String text, String author_image, String author_first_name, User commentAuthor, Ad ad) {
+    public Comment(Long id, String text, User commentAuthor, Ad ad) {
         this.id = id;
         this.text = text;
         this.createdAt = TimeOfCreation.TimeOfCreation();
-        this.author_image = author_image;
-        this.author_first_name = author_first_name;
         this.commentAuthor = commentAuthor;
         this.ad = ad;
     }

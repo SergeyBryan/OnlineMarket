@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.ListCommentsDTO;
-import ru.skypro.homework.models.Comments;
+import ru.skypro.homework.models.Comment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,11 @@ import java.util.List;
 public interface CommentMapper {
 
     @Mapping(target = "ad", ignore = true)
-    Comments commentDTOToComments(CommentDTO commentDTO);
+    Comment commentDTOToComments(CommentDTO commentDTO);
 
-//    @Mapping(target = "ad", ignore = true)
-    CommentDTO commentsToCommentDTO(Comments comment);
+    CommentDTO commentsToCommentDTO(Comment comment);
 
-    default ListCommentsDTO commentsToListCommentsDTO(List<Comments> commentsList) {
+    default ListCommentsDTO commentsToListCommentsDTO(List<Comment> commentsList) {
         List<CommentDTO> commentDTOList = new ArrayList<>();
         commentsList.forEach(e -> commentDTOList.add(commentsToCommentDTO(e)));
 
