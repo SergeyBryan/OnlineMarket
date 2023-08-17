@@ -16,9 +16,9 @@ import java.util.List;
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private Integer price;
-    @Column(name = "Title")
+    @Column(name = "title")
     private String title;
     private String image;
 
