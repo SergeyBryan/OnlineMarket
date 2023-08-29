@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface UsersRepository extends JpaRepository<User, Integer> {
-    User findUserByLogin(String login);
+    User findUserByFirstName(String login);
     @Transactional
     User getByEmail(String email);
 }
