@@ -13,9 +13,11 @@ public interface UsersService {
 
     UserDTO getUser(String login);
 
-    User getUserByLogin(String login);
+    User getUserByFirstName(String login);
 
     void editUser(String login, UpdateUserDTO updateUser);
 
     void editImage(MultipartFile multipartFile);
+
+    User getUserByUsername(String username);
 }

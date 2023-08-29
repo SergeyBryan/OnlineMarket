@@ -1,13 +1,4 @@
 databaseChangeLog:
   - include:
       file: liquibase/init.sql
-  - changeSet:
-      id: add_column_to_users
-      author: SergeyBryan
-      changes:
-        - addColumn:
-            tableName: users
-            columns:
-              - column:
-                  name: reg_date
-                  type: TIMESTAMP
+

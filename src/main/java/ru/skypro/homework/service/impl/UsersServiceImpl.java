@@ -43,7 +43,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public User getUserByLogin(String login) {
+    public User getUserByFirstName(String login) {
         return usersRepository.findUserByFirstName(login);
     }
 
@@ -62,5 +62,11 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void editImage(MultipartFile multipartFile) {
+    }
+
+
+    @Override
+    public User getUserByUsername(String username) {
+        return usersRepository.getByEmail(username);
     }
 }

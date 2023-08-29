@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import ru.skypro.homework.dto.auth.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    private Long id;
     private String email;
     @Column(name = "first_name")
     private String firstName;
@@ -32,5 +34,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private String image;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ad> ads = new ArrayList<>();
+    @OneToMany(mappedBy = "commentAuthor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 }
 
