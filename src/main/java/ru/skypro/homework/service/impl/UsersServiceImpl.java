@@ -63,4 +63,10 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void editImage(MultipartFile multipartFile) {
     }
+
+
+    @Override
+    public User getUserByUsername(String username) {
+        return usersRepository.getByEmail(username);
+    }
 }
