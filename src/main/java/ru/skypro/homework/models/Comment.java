@@ -1,7 +1,6 @@
 package ru.skypro.homework.models;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import tools.TimeOfCreation;
 
 import javax.persistence.*;
@@ -10,6 +9,8 @@ import javax.persistence.*;
 @Table(name = "comment")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +24,4 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "ad_id")
     private Ad ad;
-
-    public Comment(Long id, String text, User commentAuthor, Ad ad) {
-        this.id = id;
-        this.text = text;
-        this.createdAt = TimeOfCreation.TimeOfCreation();
-        this.commentAuthor = commentAuthor;
-        this.ad = ad;
-    }
 }

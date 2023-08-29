@@ -8,9 +8,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
@@ -76,7 +74,7 @@ public class AdController {
     )
     public ResponseEntity<AdDTO> addAd(@RequestPart("properties") CreateOrUpdateAdDTO createOrUpdateAdDTO,
                                       @RequestPart("image") MultipartFile image) throws IOException {
-        log.info("AdController, adAdd method process. Request include: " + createOrUpdateAdDTO + " " + image.getContentType());
+        log.info("AdController, adAdd method process. Request include: {} {}", createOrUpdateAdDTO, image.getContentType());
         AdDTO adDTO = adService.addAd(createOrUpdateAdDTO, image);
         return ResponseEntity.ok(adDTO);
     }
@@ -105,7 +103,7 @@ public class AdController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<AdDTO> getAdvertisement(@PathVariable String id) throws NotFoundException {
-        AdDTO ad = adService.getAd(id);
+        AdDTO ad = adService.getAdDTO(id);
         return ResponseEntity.ok(ad);
     }
 

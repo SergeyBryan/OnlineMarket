@@ -7,10 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.dto.comment.ListCommentsDTO;
+import ru.skypro.homework.service.CommentsService;
 
 
 @Slf4j
@@ -19,6 +19,11 @@ import ru.skypro.homework.dto.comment.ListCommentsDTO;
 @CrossOrigin(value = "http://localhost:3000")
 public class CommentsController {
 
+    private final CommentsService commentsService;
+
+    public CommentsController(CommentsService commentsService) {
+        this.commentsService = commentsService;
+    }
 
     @Operation(
             summary = "Get Ad comments",

@@ -9,7 +9,6 @@ import ru.skypro.homework.dto.ad.ListAdsDTO;
 import ru.skypro.homework.exceptions.NotFoundException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.models.Ad;
-import ru.skypro.homework.models.User;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.FileService;
@@ -49,10 +48,20 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdDTO getAd(String id) throws NotFoundException {
+    public AdDTO getAdDTO(String id) throws NotFoundException {
         Optional<Ad> adById = adRepository.findById(Long.parseLong(id));
         if (adById.isPresent()) {
             return mapper.toAdDTO(adById.get());
+        } else {
+            throw new NotFoundException("Объявление id:" + id + " не найдено");
+        }
+    }
+
+    @Override
+    public Ad getAd(String id) throws NotFoundException {
+        Optional<Ad> adById = adRepository.findById(Long.parseLong(id));
+        if (adById.isPresent()) {
+            return adById.get();
         } else {
             throw new NotFoundException("Объявление id:" + id + " не найдено");
         }
