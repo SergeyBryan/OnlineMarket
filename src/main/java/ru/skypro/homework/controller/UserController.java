@@ -71,7 +71,9 @@ public class UserController {
             value = "/me",
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<User> getUser(){
+//todo Привязать через Spring security login
+    public ResponseEntity<User> getUser() {
+        userService.getUser("user@gmail.com");
         return ResponseEntity.ok().build();
     }
 
@@ -95,7 +97,9 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<UpdateUserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO){
+//todo Привязать через Spring security login
+    public ResponseEntity<UpdateUserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) {
+        userService.editUser("user@gmail.com", updateUserDTO);
         return ResponseEntity.ok().build();
     }
 
@@ -118,8 +122,10 @@ public class UserController {
             value = "/me/image",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
     )
-    public ResponseEntity<Void> updateUsersImage(@RequestPart("image") MultipartFile image){
+    public ResponseEntity<Void> updateUsersImage(@RequestPart("image") MultipartFile image) {
+
         return ResponseEntity.ok().build();
     }
 }
+
 
