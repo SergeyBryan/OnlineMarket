@@ -17,16 +17,17 @@ create table users
 
 create table ad
 (
-    id                bigserial  primary key,
-    price             integer not null,
-    title             text,
-    image             text    not null,
-    user_id           bigint    references users(id)
+    id          bigserial primary key,
+    price       integer not null,
+    title       text,
+    description text,
+    image       text    not null,
+    user_id     bigint references users (id)
 
 );
 
 
-create table comments
+create table comment
 (
     id                bigserial primary key,
     text              text      not null,

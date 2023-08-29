@@ -20,6 +20,7 @@ public class Ad {
     private Integer price;
     @Column(name = "title")
     private String title;
+    private String description;
     private String image;
 
     @ManyToOne

@@ -13,4 +13,6 @@ public interface UsersService {
     UpdateUserDTO editUser(UpdateUserDTO updateUser);
 
     void editImage(MultipartFile multipartFile);
+
+    User getUserByUsername(String username);
 }
