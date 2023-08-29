@@ -1,13 +1,18 @@
-package ru.skypro.homework.models;
+package ru.skypro.homework.dto.ad;
 
-public class Advertisement {
-    private int ID;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class ExtendedAdDto {
+    private Long id;
     private String authorFirstName;
     private String authorLastName;
     private String description;
     private String email;
     private String image;
     private String phone;
-    private String price;
+    private Integer price;
     private String title;
 }

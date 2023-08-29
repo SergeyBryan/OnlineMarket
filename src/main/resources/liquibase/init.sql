@@ -4,35 +4,36 @@
 
 create table users
 (
-    id         serial primary key,
+    id         bigserial primary key,
     email      text not null,
     first_name text,
     last_name  text,
+    reg_date   timestamp not null,
     phone      text,
     role       varchar not null,
     image      text
+
 );
+
+create table ad
+(
+    id                bigserial  primary key,
+    price             integer not null,
+    title             text,
+    image             text    not null,
+    user_id           bigint    references users(id)
+
+);
+
 
 create table comments
 (
-    id                serial primary key,
-    created_at        timestamp not null,
-    author_image      text      not null,
-    author_first_name text      not null,
-    txt               text      not null
+    id                bigserial primary key,
+    text              text      not null,
+    created_at        bigint    not null,
+    user_id           bigint      references users(id),
+    ad_id             bigint    references ad(id)
 );
 
-create table extended_ad
-(
-    id                serial primary key,
-    author_first_name text    not null,
-    author_last_name  text    not null,
-    email             text    not null,
-    phone             text    not null,
-    price             integer not null,
-    description       text    not null,
-    title             text,
-    image             text    not null
-);
 
 
