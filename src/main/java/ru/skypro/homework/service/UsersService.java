@@ -2,15 +2,22 @@ package ru.skypro.homework.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.UpdateUserDTO;
+import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.models.User;
 
 public interface UsersService {
 
-    User save(User user);
+    void save(User user);
 
-    User getByID(int ID);
+    UserDTO getByID(int ID);
 
-    UpdateUserDTO editUser(UpdateUserDTO updateUser);
+    UserDTO getUser(String login);
+
+    User getUserByFirstName(String login);
+
+    void editUser(String login, UpdateUserDTO updateUser);
 
     void editImage(MultipartFile multipartFile);
+
+    User getUserByUsername(String username);
 }
