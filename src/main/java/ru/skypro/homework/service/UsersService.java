@@ -1,23 +1,27 @@
 package ru.skypro.homework.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.UpdateUserDTO;
 import ru.skypro.homework.dto.UserDTO;
+import ru.skypro.homework.dto.auth.NewPasswordDTO;
 import ru.skypro.homework.models.User;
 
 public interface UsersService {
 
-    void save(User user);
+    User save(User user);
 
-    UserDTO getByID(int ID);
+    UserDTO getByID(long ID);
 
-    UserDTO getUser(String login);
+    UserDTO getUser(UserDetails userDetails);
 
-    User getUserByFirstName(String login);
+    User findUserByLogin(String userName);
 
-    void editUser(String login, UpdateUserDTO updateUser);
+    void editUser(UserDetails userDetails, UpdateUserDTO updateUser);
 
-    void editImage(MultipartFile multipartFile);
+    User editImage(UserDetails userDetails, MultipartFile multipartFile);
 
-    User getUserByUsername(String username);
+    User getUserByUsername(String login);
+
+    User updateUserPassword(NewPasswordDTO newPasswordDTO, UserDetails userDetails);
 }

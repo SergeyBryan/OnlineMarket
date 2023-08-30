@@ -6,6 +6,7 @@ create table users
 (
     id         bigserial primary key,
     email      text not null,
+    password   text not null,
     first_name text,
     last_name  text,
     reg_date   timestamp not null,
