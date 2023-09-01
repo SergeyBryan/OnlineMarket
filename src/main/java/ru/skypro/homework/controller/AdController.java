@@ -7,12 +7,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ad.ListAdsDTO;
-import ru.skypro.homework.models.Advertisement;
+import ru.skypro.homework.exceptions.NotFoundException;
+import ru.skypro.homework.service.AdService;
+
+import java.io.IOException;
 
 
 @Slf4j
@@ -20,6 +27,12 @@ import ru.skypro.homework.models.Advertisement;
 @RequestMapping("/ads")
 @CrossOrigin(value = "http://localhost:3000")
 public class AdController {
+
+    private final AdService adService;
+
+    public AdController(AdService adService) {
+        this.adService = adService;
+    }
 
     @Operation(
             summary = "Get all ads",
@@ -38,7 +51,8 @@ public class AdController {
             })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ListAdsDTO> getAllAds() {
-        return ResponseEntity.ok().build();
+        ListAdsDTO allAds = adService.getAllAds();
+        return ResponseEntity.ok(allAds);
     }
 
     @Operation(
@@ -60,10 +74,11 @@ public class AdController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<AdDTO> adAd(@RequestPart("properties") CreateOrUpdateAdDTO createOrUpdateAdDTO,
-                                      @RequestPart("image") MultipartFile image) {
+    public ResponseEntity<AdDTO> addAd(@RequestPart("properties") CreateOrUpdateAdDTO createOrUpdateAdDTO,
+                                      @RequestPart("image") MultipartFile image) throws IOException {
         log.info("AdController, adAdd method process. Request include: " + createOrUpdateAdDTO + " " + image.getContentType());
-        return ResponseEntity.ok().build();
+        AdDTO adDTO = adService.addAd(createOrUpdateAdDTO, image);
+        return ResponseEntity.ok(adDTO);
     }
 
     @Operation(
@@ -89,8 +104,9 @@ public class AdController {
             value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Advertisement> getAdvertisement(@PathVariable String id) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AdDTO> getAdvertisement(@PathVariable String id) throws NotFoundException {
+        AdDTO ad = adService.getAd(id);
+        return ResponseEntity.ok(ad);
     }
 
     @Operation(
@@ -117,7 +133,8 @@ public class AdController {
                     )
             })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Advertisement> deleteAd(@PathVariable String id) {
+    public ResponseEntity<Void> deleteAd(@PathVariable String id) {
+        adService.deleteAd(id);
         return ResponseEntity.ok().build();
     }
 
@@ -149,9 +166,10 @@ public class AdController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<CreateOrUpdateAdDTO> updateAd(@RequestBody AdDTO adDTO,
+    public ResponseEntity<AdDTO> updateAd(@RequestBody CreateOrUpdateAdDTO adDTO,
                                                         @PathVariable String id) {
-        return ResponseEntity.ok().build();
+        AdDTO updatedAd = adService.updateAd(adDTO, id);
+        return ResponseEntity.ok(updatedAd);
     }
 
     @Operation(
@@ -174,7 +192,13 @@ public class AdController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<ListAdsDTO> getUsersAds() {
-        return ResponseEntity.ok().build();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        log.info("username: " + username);
+        Object principal = authentication.getPrincipal();
+        log.info("principal: " + principal);
+        ListAdsDTO usersAds = adService.getUsersAds(username);
+        return ResponseEntity.ok(usersAds);
     }
 
     @Operation(
@@ -207,10 +231,9 @@ public class AdController {
     )
     @ResponseBody
     public ResponseEntity<InputStreamResource> updateImage(@PathVariable String id,
-                                                           @RequestPart("image") MultipartFile image) {
-        log.info("AdController, updateImage method process. Request include: " + " " + image.getOriginalFilename());
-        return ResponseEntity.ok().build();
-
+                                                           @RequestPart("image") MultipartFile image) throws IOException {
+        var inputStreamResource = adService.updateAdsImage(id, image);
+        return ResponseEntity.ok(inputStreamResource);
     }
 
 }

@@ -7,10 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.dto.comment.ListCommentsDTO;
-import ru.skypro.homework.models.Advertisement;
 
 
 @Slf4j
@@ -97,8 +97,8 @@ public class CommentsController {
                     )
             })
     @DeleteMapping(value = "/{commentId}")
-    public ResponseEntity<Advertisement> deleteAd(@PathVariable String adId,
-                                                  @PathVariable String commentId) {
+    public ResponseEntity<Void> deleteAd(@PathVariable String adId,
+                                          @PathVariable String commentId) {
         return ResponseEntity.ok().build();
     }
 
