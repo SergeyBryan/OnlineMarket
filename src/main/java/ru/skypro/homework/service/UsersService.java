@@ -1,5 +1,6 @@
 package ru.skypro.homework.service;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.UpdateUserDTO;
@@ -13,15 +14,16 @@ public interface UsersService {
 
     UserDTO getByID(long ID);
 
-    UserDTO getUser(UserDetails userDetails);
+    UserDTO getUser(Authentication authentication);
 
-    User findUserByLogin(String userName);
 
-    void editUser(UserDetails userDetails, UpdateUserDTO updateUser);
+    void editUser(Authentication authentication, UpdateUserDTO updateUser);
 
-    User editImage(UserDetails userDetails, MultipartFile multipartFile);
+    User editImage(Authentication authentication, MultipartFile multipartFile);
 
     User getUserByUsername(String login);
 
-    User updateUserPassword(NewPasswordDTO newPasswordDTO, UserDetails userDetails);
+    boolean ifUserExist(String login);
+
+    User updateUserPassword(NewPasswordDTO newPasswordDTO, Authentication authentication);
 }

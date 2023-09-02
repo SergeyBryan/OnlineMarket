@@ -1,16 +1,13 @@
 package ru.skypro.homework.exceptions;
 
-public class NotFoundException extends Exception {
-    private final String message;
+public class NotFoundException extends RuntimeException {
 
     public NotFoundException(String str) {
-        message = str;
+        super(str);
     }
 
-    @Override
-    public String toString() {
-        return "NotFoundException{" +
-                "message='" + message + '\'' +
-                '}';
+
+    public NotFoundException() {
+        super("Ошибка при создании сущности");
     }
 }
