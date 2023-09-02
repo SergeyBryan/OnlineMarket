@@ -1,6 +1,10 @@
 package ru.skypro.homework.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
@@ -22,6 +26,7 @@ import java.util.Optional;
 
 @Service
 public class AdServiceImpl implements AdService {
+    Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
 
     private final AdRepository adRepository;
     private final AdMapper mapper;
@@ -42,15 +47,16 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdDTO addAd(CreateOrUpdateAdDTO createOrUpdateAdDTO, MultipartFile image) throws IOException {
+    public AdDTO addAd(User user, CreateOrUpdateAdDTO createOrUpdateAdDTO, MultipartFile image) {
         Ad ad = mapper.createOrUpdateDTOToAd(createOrUpdateAdDTO);
         ad.setImage(fileService.saveImage(image));
+        ad.setAuthor(user);
         return mapper.toAdDTO(adRepository.save(ad));
     }
 
     @Override
-    public AdDTO getAd(String id) throws NotFoundException {
-        Optional<Ad> adById = adRepository.findById(Long.parseLong(id));
+    public AdDTO getAd(Long id) throws NotFoundException {
+        Optional<Ad> adById = adRepository.findById(id);
         if (adById.isPresent()) {
             return mapper.toAdDTO(adById.get());
         } else {
@@ -64,8 +70,8 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdDTO updateAd(CreateOrUpdateAdDTO adDTO, String id) {
-        Ad byId = adRepository.getReferenceById(Long.parseLong(id));
+    public AdDTO updateAd(CreateOrUpdateAdDTO adDTO, Long id) {
+        Ad byId = adRepository.getReferenceById(id);
         mapper.updateAdFromDto(adDTO, byId);
         adRepository.save(byId);
         return null;

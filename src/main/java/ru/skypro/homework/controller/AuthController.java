@@ -2,8 +2,13 @@ package ru.skypro.homework.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skypro.homework.dto.auth.Login;
 import ru.skypro.homework.dto.auth.Register;
 import ru.skypro.homework.service.AuthService;
+import ru.skypro.homework.service.UsersService;
+import ru.skypro.homework.service.impl.UsersServiceImpl;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")

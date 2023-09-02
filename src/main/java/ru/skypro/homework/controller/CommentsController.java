@@ -3,22 +3,38 @@ package ru.skypro.homework.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.dto.comment.ListCommentsDTO;
+import ru.skypro.homework.mapper.AdMapper;
+import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.UsersService;
 
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/ads/{adId}/comments")
 @CrossOrigin(value = "http://localhost:3000")
 public class CommentsController {
 
+    private final CommentService commentService;
+    private final UsersService usersService;
+    private final AdService adService;
+    private final AdMapper adMapper;
+    private final CommentMapper commentMapper;
 
     @Operation(
             summary = "Get Ad comments",
@@ -42,8 +58,9 @@ public class CommentsController {
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<ListCommentsDTO> getAdComments(@PathVariable String adId) {
-        return ResponseEntity.ok().build();
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<ListCommentsDTO> getAdComments(@PathVariable Long adId) {
+        return ResponseEntity.ok(commentService.findCommentsByAdId(adId));
     }
 
     @Operation(
@@ -69,8 +86,13 @@ public class CommentsController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<CommentDTO> addCommentToAd(@RequestBody CreateOrUpdateCommentDTO CorUCommentDTO, @PathVariable String adId) {
-        return ResponseEntity.ok().build();
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<CommentDTO> addCommentToAd(@RequestBody CreateOrUpdateCommentDTO dto, @PathVariable Long adId, Authentication authentication) {
+
+        return ResponseEntity.ok(commentMapper.commentsToCommentDTO(
+                commentService.create(
+                        usersService.getUserByUsername(authentication.getName()),
+                        adMapper.toAd(adService.getAd(adId)), dto)));
     }
 
     @Operation(
@@ -97,9 +119,10 @@ public class CommentsController {
                     )
             })
     @DeleteMapping(value = "/{commentId}")
-    public ResponseEntity<Void> deleteAd(@PathVariable String adId,
-                                          @PathVariable String commentId) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HttpStatus> deleteAd(@PathVariable String adId,
+                                               @PathVariable Long commentId) {
+        commentService.delete(commentId);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @Operation(
@@ -130,9 +153,11 @@ public class CommentsController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<CommentDTO> updateAd(@PathVariable String adId,
-                                               @PathVariable String commentId,
-                                               @RequestBody CreateOrUpdateCommentDTO CorUCommentDTO) {
-        return ResponseEntity.ok().build();
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable String adId,
+                                                    @PathVariable Long commentId,
+                                                    @RequestBody CreateOrUpdateCommentDTO dto) {
+
+        return ResponseEntity.ok(commentMapper.commentsToCommentDTO(commentService.update(commentId, dto)));
     }
 }

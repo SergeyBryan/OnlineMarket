@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -59,12 +62,9 @@ public class UserController {
             value = "/set_password",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<HttpStatus> setNewPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO) {
-        log.info("{}", ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
-        userService.updateUserPassword(newPasswordDTO, ((UserDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal()));
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<HttpStatus> setNewPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO, Authentication authentication) {
+        userService.updateUserPassword(newPasswordDTO, authentication);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -87,11 +87,9 @@ public class UserController {
             value = "/me",
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<UserDTO> getUser() {
-        return ResponseEntity.ok(userService.getUser((UserDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal()));
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<UserDTO> getUser(Authentication authentication) {
+        return ResponseEntity.ok(userService.getUser(authentication));
     }
 
     @Operation(
@@ -114,11 +112,9 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<HttpStatus> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) {
-        userService.editUser((UserDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal(), updateUserDTO);
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<HttpStatus> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO, Authentication authentication) {
+        userService.editUser(authentication, updateUserDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -141,11 +137,9 @@ public class UserController {
             value = "/me/image",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
     )
-    public ResponseEntity<HttpStatus> updateUsersImage(@RequestPart("image") MultipartFile image) {
-        userService.editImage((UserDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal(), image);
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<HttpStatus> updateUsersImage(@RequestPart("image") MultipartFile image, Authentication authentication) {
+        userService.editImage(authentication, image);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

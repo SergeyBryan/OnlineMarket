@@ -5,11 +5,14 @@ import org.springframework.stereotype.Repository;
 import ru.skypro.homework.models.User;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 
 @Repository
 public interface UsersRepository extends JpaRepository<User, Long> {
 
     @Transactional
-    User findUserByEmail(String email);
+    Optional<User> findUserByEmail(String email);
+
+    boolean existsUserByEmail(String email);
 }

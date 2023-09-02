@@ -3,6 +3,7 @@ package ru.skypro.homework.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.webjars.NotFoundException;
 import ru.skypro.homework.dto.UpdateUserDTO;
 import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.dto.auth.NewPasswordDTO;
+import ru.skypro.homework.exceptions.NotFoundInDataBaseException;
 import ru.skypro.homework.mapper.UserMapperImpl;
 import ru.skypro.homework.models.User;
 import ru.skypro.homework.repository.UsersRepository;
@@ -52,18 +54,14 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UserDTO getUser(UserDetails userDetails) {
-        return userMapper.userToUserDTO(findUserByLogin(userDetails.getUsername()));
+    public UserDTO getUser(Authentication authentication) {
+        return userMapper.userToUserDTO(getUserByUsername(authentication.getName()));
     }
 
-    @Override
-    public User findUserByLogin(String userName) {
-        return usersRepository.findUserByEmail(userName);
-    }
 
     @Override
-    public void editUser(UserDetails userDetails, UpdateUserDTO updateUser) {
-        User user = findUserByLogin(userDetails.getUsername());
+    public void editUser(Authentication authentication, UpdateUserDTO updateUser) {
+        User user = getUserByUsername(authentication.getName());
         if (user != null) {
             user.setFirstName(updateUser.getFirstName());
             user.setLastName(updateUser.getLastName());
@@ -74,8 +72,8 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public User editImage(UserDetails userDetails, MultipartFile multipartFile) {
-        User user = findUserByLogin(userDetails.getUsername());
+    public User editImage(Authentication authentication, MultipartFile multipartFile) {
+        User user = getUserByUsername(authentication.getName());
         user.setImage(fileService.saveImage(multipartFile));
         logger.debug("Изображение пользователя обновлено, {}", multipartFile.getOriginalFilename());
         return save(user);
@@ -84,12 +82,17 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public User getUserByUsername(String login) {
-        return usersRepository.findUserByEmail(login);
+        return usersRepository.findUserByEmail(login).orElseThrow(NotFoundInDataBaseException::new);
     }
 
     @Override
-    public User updateUserPassword(NewPasswordDTO newPasswordDTO, UserDetails userDetails) {
-        User user = findUserByLogin(userDetails.getUsername());
+    public boolean ifUserExist(String login) {
+        return usersRepository.existsUserByEmail(login);
+    }
+
+    @Override
+    public User updateUserPassword(NewPasswordDTO newPasswordDTO, Authentication authentication) {
+        User user = getUserByUsername(authentication.getName());
         user.setPassword(passwordEncoder.encode(newPasswordDTO.getNewPassword()));
         logger.debug("Пароль был обновлён");
         return save(user);
