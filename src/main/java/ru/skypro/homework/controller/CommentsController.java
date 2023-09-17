@@ -58,7 +58,6 @@ public class CommentsController {
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<ListCommentsDTO> getAdComments(@PathVariable Long adId) {
         return ResponseEntity.ok(commentService.findCommentsByAdId(adId));
     }
@@ -86,7 +85,6 @@ public class CommentsController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<CommentDTO> addCommentToAd(@RequestBody CreateOrUpdateCommentDTO dto, @PathVariable Long adId, Authentication authentication) {
 
         return ResponseEntity.ok(commentMapper.commentsToCommentDTO(
@@ -153,7 +151,6 @@ public class CommentsController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable String adId,
                                                     @PathVariable Long commentId,
                                                     @RequestBody CreateOrUpdateCommentDTO dto) {

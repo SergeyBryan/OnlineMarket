@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import liquibase.pro.packaged.L;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -84,7 +83,6 @@ public class AdController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<AdDTO> addAd(@RequestPart("properties") CreateOrUpdateAdDTO createOrUpdateAdDTO,
                                        @RequestPart("image") MultipartFile image, Authentication authentication) throws IOException {
         log.info("AdController, adAdd method process. Request include: " + createOrUpdateAdDTO + " " + image.getContentType());
@@ -117,7 +115,6 @@ public class AdController {
             value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<AdDTO> getAdvertisement(@PathVariable Long id) throws NotFoundException {
         AdDTO ad = adService.getAd(id);
         return ResponseEntity.ok(ad);
@@ -147,7 +144,6 @@ public class AdController {
                     )
             })
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Void> deleteAd(@PathVariable String id) {
         adService.deleteAd(id);
         return ResponseEntity.ok().build();
@@ -181,7 +177,6 @@ public class AdController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<AdDTO> updateAd(@RequestBody CreateOrUpdateAdDTO adDTO,
                                           @PathVariable Long id) {
         AdDTO updatedAd = adService.updateAd(adDTO, id);
@@ -207,7 +202,6 @@ public class AdController {
             value = "/me",
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<ListAdsDTO> getUsersAds() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -247,7 +241,6 @@ public class AdController {
             produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE}
     )
     @ResponseBody
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<InputStreamResource> updateImage(@PathVariable String id,
                                                            @RequestPart("image") MultipartFile image) throws IOException {
         var inputStreamResource = adService.updateAdsImage(id, image);
