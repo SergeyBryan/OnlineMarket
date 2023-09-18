@@ -1,6 +1,5 @@
 package ru.skypro.homework.service;
 
-import liquibase.pro.packaged.L;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;

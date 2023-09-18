@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +38,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public User save(User user) {
         if (user != null) {
-            logger.debug("Изменения в базе данных по пользователю были изменены, {}", user.getEmail());
+            logger.debug("Изменения в базе данных по пользователю были изменены, {}", user.getUsername());
             return usersRepository.save(user);
         } else {
             logger.error("Изменения в базе данных по пользователю не были изменены");
@@ -82,17 +81,18 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public User getUserByUsername(String login) {
-        return usersRepository.findUserByEmail(login).orElseThrow(NotFoundInDataBaseException::new);
+        return usersRepository.findUserByUsername(login).orElseThrow(NotFoundInDataBaseException::new);
     }
 
     @Override
     public boolean ifUserExist(String login) {
-        return usersRepository.existsUserByEmail(login);
+        return usersRepository.existsUserByUsername(login);
     }
 
     @Override
     public User updateUserPassword(NewPasswordDTO newPasswordDTO, Authentication authentication) {
         User user = getUserByUsername(authentication.getName());
+        System.out.println(user);
         user.setPassword(passwordEncoder.encode(newPasswordDTO.getNewPassword()));
         logger.debug("Пароль был обновлён");
         return save(user);

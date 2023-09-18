@@ -62,8 +62,9 @@ public class UserController {
             value = "/set_password",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<HttpStatus> setNewPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO, Authentication authentication) {
+    public ResponseEntity<HttpStatus> setNewPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO,
+                                                     Authentication authentication
+    ) {
         userService.updateUserPassword(newPasswordDTO, authentication);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -87,7 +88,6 @@ public class UserController {
             value = "/me",
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<UserDTO> getUser(Authentication authentication) {
         return ResponseEntity.ok(userService.getUser(authentication));
     }
@@ -112,7 +112,6 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<HttpStatus> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO, Authentication authentication) {
         userService.editUser(authentication, updateUserDTO);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -137,7 +136,6 @@ public class UserController {
             value = "/me/image",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
     )
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<HttpStatus> updateUsersImage(@RequestPart("image") MultipartFile image, Authentication authentication) {
         userService.editImage(authentication, image);
         return ResponseEntity.ok(HttpStatus.OK);

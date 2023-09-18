@@ -9,6 +9,6 @@ public class NotFoundInDataBaseException extends RuntimeException {
     }
 
     public NotFoundInDataBaseException() {
-        super("Пользователь не найден в базе данных");
+        super("Объект не найден в базе данных");
     }
 }
