@@ -23,13 +23,11 @@ public class ImageController {
     @GetMapping(value = "/users/{imageId}"
     )
     public byte[] getUserImage(@PathVariable String imageId) throws IOException {
-        System.out.println(Path.of(imagesPath + usersImagesPath + File.separator + imageId));
         return Files.readAllBytes(Path.of(imagesPath + usersImagesPath + File.separator + imageId));
     }
 
     @GetMapping(value = "/ads/{imageId}")
     public byte[] getAdImage(@PathVariable String imageId) throws IOException {
-        System.out.println(Path.of(imagesPath + adsImagesPath + File.separator + imageId));
         return Files.readAllBytes(Path.of(imagesPath + adsImagesPath + File.separator + imageId));
     }
 
