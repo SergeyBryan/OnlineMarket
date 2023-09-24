@@ -1,23 +1,30 @@
 package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ad.ListAdsDTO;
 import ru.skypro.homework.exceptions.NotFoundException;
+import ru.skypro.homework.models.Ad;
+import ru.skypro.homework.models.User;
 import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.UsersService;
 
 import java.io.IOException;
 
@@ -29,9 +36,11 @@ import java.io.IOException;
 public class AdController {
 
     private final AdService adService;
+    private final UsersService usersService;
 
-    public AdController(AdService adService) {
+    public AdController(AdService adService, UsersService usersService) {
         this.adService = adService;
+        this.usersService = usersService;
     }
 
     @Operation(
@@ -75,9 +84,10 @@ public class AdController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<AdDTO> addAd(@RequestPart("properties") CreateOrUpdateAdDTO createOrUpdateAdDTO,
-                                      @RequestPart("image") MultipartFile image) throws IOException {
+                                       @RequestPart("image") MultipartFile image, Authentication authentication) throws IOException {
         log.info("AdController, adAdd method process. Request include: " + createOrUpdateAdDTO + " " + image.getContentType());
-        AdDTO adDTO = adService.addAd(createOrUpdateAdDTO, image);
+        User user = usersService.getUserByUsername(authentication.getName());
+        AdDTO adDTO = adService.addAd(user, createOrUpdateAdDTO, image);
         return ResponseEntity.ok(adDTO);
     }
 
@@ -89,7 +99,8 @@ public class AdController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "OK"
+                            description = "OK",
+                            content = @Content(mediaType=MediaType.APPLICATION_JSON_VALUE,array = @ArraySchema(schema = @Schema(implementation = Ad.class)))
                     ),
                     @ApiResponse(
                             responseCode = "401",
@@ -102,9 +113,9 @@ public class AdController {
             })
     @GetMapping(
             value = "/{id}",
-            produces = {MediaType.APPLICATION_JSON_VALUE}
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<AdDTO> getAdvertisement(@PathVariable String id) throws NotFoundException {
+    public ResponseEntity<AdDTO> getAdvertisement(@PathVariable Long id) throws NotFoundException {
         AdDTO ad = adService.getAd(id);
         return ResponseEntity.ok(ad);
     }
@@ -167,7 +178,7 @@ public class AdController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<AdDTO> updateAd(@RequestBody CreateOrUpdateAdDTO adDTO,
-                                                        @PathVariable String id) {
+                                          @PathVariable Long id) {
         AdDTO updatedAd = adService.updateAd(adDTO, id);
         return ResponseEntity.ok(updatedAd);
     }

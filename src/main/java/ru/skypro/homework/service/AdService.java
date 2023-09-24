@@ -6,6 +6,7 @@ import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ad.ListAdsDTO;
 import ru.skypro.homework.exceptions.NotFoundException;
+import ru.skypro.homework.models.User;
 
 import java.io.IOException;
 
@@ -13,13 +14,13 @@ import java.io.IOException;
 public interface AdService {
     ListAdsDTO getAllAds();
 
-    AdDTO addAd(CreateOrUpdateAdDTO adDTO, MultipartFile image) throws IOException;
+    AdDTO addAd(User user, CreateOrUpdateAdDTO adDTO, MultipartFile image) throws IOException;
 
-    AdDTO getAd(String id) throws NotFoundException;
+    AdDTO getAd(Long id) throws NotFoundException;
 
     void deleteAd(String id);
 
-    AdDTO updateAd(CreateOrUpdateAdDTO adDTO, String id);
+    AdDTO updateAd(CreateOrUpdateAdDTO adDTO, Long id);
 
     ListAdsDTO getUsersAds(String userid);
 

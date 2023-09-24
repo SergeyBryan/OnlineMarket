@@ -17,6 +17,7 @@ public interface CommentMapper {
 
     CommentDTO commentsToCommentDTO(Comment comment);
 
+
     default ListCommentsDTO commentsToListCommentsDTO(List<Comment> commentsList) {
         List<CommentDTO> commentDTOList = new ArrayList<>();
         commentsList.forEach(e -> commentDTOList.add(commentsToCommentDTO(e)));

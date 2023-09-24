@@ -3,6 +3,7 @@ package ru.skypro.homework.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,11 +28,11 @@ public class Ad {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "ad",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
-
 
 
 }
