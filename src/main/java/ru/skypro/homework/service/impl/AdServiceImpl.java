@@ -44,7 +44,6 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdDTO addAd(User user, CreateOrUpdateAdDTO createOrUpdateAdDTO, MultipartFile image) {
         Ad ad = mapper.createOrUpdateDTOToAd(createOrUpdateAdDTO);
-        ad.setImage(fileService.saveImage(image));
         ad.setImage(fileService.saveAdsImage(image));
         ad.setAuthor(user);
         return mapper.toAdDTO(adRepository.save(ad));
