@@ -8,5 +8,9 @@ import java.io.IOException;
 public interface FileService {
     String saveImage(MultipartFile image);
 
+    String saveUserImage(MultipartFile file);
+
+    String saveAdsImage(MultipartFile file);
+
     void updateImage(String pathToOldImage, MultipartFile image) throws IOException;
 }

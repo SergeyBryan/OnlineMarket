@@ -10,11 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
@@ -100,7 +97,7 @@ public class AdController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "OK",
-                            content = @Content(mediaType=MediaType.APPLICATION_JSON_VALUE,array = @ArraySchema(schema = @Schema(implementation = Ad.class)))
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = Ad.class)))
                     ),
                     @ApiResponse(
                             responseCode = "401",
@@ -112,8 +109,7 @@ public class AdController {
                     )
             })
     @GetMapping(
-            value = "/{id}",
-            consumes = {MediaType.APPLICATION_JSON_VALUE}
+            value = "/{id}"
     )
     public ResponseEntity<AdDTO> getAdvertisement(@PathVariable Long id) throws NotFoundException {
         AdDTO ad = adService.getAd(id);
@@ -205,9 +201,6 @@ public class AdController {
     public ResponseEntity<ListAdsDTO> getUsersAds() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        log.info("username: " + username);
-        Object principal = authentication.getPrincipal();
-        log.info("principal: " + principal);
         ListAdsDTO usersAds = adService.getUsersAds(username);
         return ResponseEntity.ok(usersAds);
     }
