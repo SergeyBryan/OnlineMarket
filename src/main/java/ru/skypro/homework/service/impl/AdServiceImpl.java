@@ -1,10 +1,6 @@
 package ru.skypro.homework.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
@@ -26,7 +22,6 @@ import java.util.Optional;
 
 @Service
 public class AdServiceImpl implements AdService {
-    Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
 
     private final AdRepository adRepository;
     private final AdMapper mapper;
@@ -49,7 +44,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdDTO addAd(User user, CreateOrUpdateAdDTO createOrUpdateAdDTO, MultipartFile image) {
         Ad ad = mapper.createOrUpdateDTOToAd(createOrUpdateAdDTO);
-        ad.setImage(fileService.saveImage(image));
+        ad.setImage(fileService.saveAdsImage(image));
         ad.setAuthor(user);
         return mapper.toAdDTO(adRepository.save(ad));
     }

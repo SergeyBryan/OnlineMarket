@@ -73,7 +73,8 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public User editImage(Authentication authentication, MultipartFile multipartFile) {
         User user = getUserByUsername(authentication.getName());
-        user.setImage(fileService.saveImage(multipartFile));
+        String image = fileService.saveImage(multipartFile);
+        user.setImage("/" + image);
         logger.debug("Изображение пользователя обновлено, {}", multipartFile.getOriginalFilename());
         return save(user);
     }
@@ -92,7 +93,6 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public User updateUserPassword(NewPasswordDTO newPasswordDTO, Authentication authentication) {
         User user = getUserByUsername(authentication.getName());
-        System.out.println(user);
         user.setPassword(passwordEncoder.encode(newPasswordDTO.getNewPassword()));
         logger.debug("Пароль был обновлён");
         return save(user);
