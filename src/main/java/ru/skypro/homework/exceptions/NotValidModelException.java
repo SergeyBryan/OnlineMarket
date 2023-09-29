@@ -1,6 +1,6 @@
 package ru.skypro.homework.exceptions;
 
-public class NotValidModelException extends Exception {
+public class NotValidModelException extends RuntimeException {
     public NotValidModelException(String txt) {
         super(txt);
     }

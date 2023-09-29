@@ -18,17 +18,22 @@ public interface AdMapper {
 
     Ad toAd(AdDTO dto);
 
+
+
+
     CreateOrUpdateAdDTO toCreateOrUpdateAdDTO(Ad ad);
+
     Ad createOrUpdateDTOToAd(CreateOrUpdateAdDTO ad);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateAdFromDto(CreateOrUpdateAdDTO dto, @MappingTarget Ad entity);
 
-    default ListAdsDTO toListAdsDTO(List<Ad> adList){
+    default ListAdsDTO toListAdsDTO(List<Ad> adList) {
         List<CreateOrUpdateAdDTO> results = adList.stream()
                 .map(this::toCreateOrUpdateAdDTO)
                 .collect(Collectors.toList());
         return new ListAdsDTO(results.size(), results);
     }
+
 
 }
