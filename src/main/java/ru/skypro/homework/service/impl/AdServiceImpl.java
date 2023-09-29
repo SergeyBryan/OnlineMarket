@@ -5,18 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAdDTO;
-//import ru.skypro.homework.dto.ad.CreateOrUpdateAdDTODTO;
-import ru.skypro.homework.dto.ad.ExtendedAdDto;
-//import ru.skypro.homework.dto.ad.ExtendedAdDtoDto;
 import ru.skypro.homework.dto.ad.ListAdsDTO;
-//import ru.skypro.homework.dto.ad.ListListAdsDTODTO;
 import ru.skypro.homework.exceptions.NotFoundException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.models.Ad;
 import ru.skypro.homework.models.User;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.AdService;
-//import ru.skypro.homework.service.ListAdsDTOervice;
 import ru.skypro.homework.service.FileService;
 import ru.skypro.homework.service.UsersService;
 
@@ -24,7 +19,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AdServiceImpl implements AdService {
@@ -48,9 +42,8 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdDTO addAd(User user, CreateOrUpdateAdDTO CreateOrUpdateAdDTODTO, MultipartFile image) {
-        Ad ad = mapper.createOrUpdateDTOToAd(CreateOrUpdateAdDTODTO);
-        ad.setImage(fileService.saveImage(image));
+    public AdDTO addAd(User user, CreateOrUpdateAdDTO createOrUpdateAdDTO, MultipartFile image) {
+        Ad ad = mapper.createOrUpdateDTOToAd(createOrUpdateAdDTO);
         ad.setImage(fileService.saveAdsImage(image));
         ad.setAuthor(user);
         return mapper.toAdDTO(adRepository.save(ad));
