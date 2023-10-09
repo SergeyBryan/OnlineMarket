@@ -11,10 +11,8 @@ import ru.skypro.homework.dto.auth.Role;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -45,11 +43,25 @@ public class User implements UserDetails {
     private boolean enabled;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "author",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Ad> ads = new ArrayList<>();
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Ad> ads;
     @ToString.Exclude
-    @OneToMany(mappedBy = "commentAuthor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "commentAuthor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+    public User(Long id, String username,
+                String password, String firstName,
+                String lastName, String phone,
+                Role role, String image) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.phone = phone;
+        this.role = role;
+        this.image = image;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
